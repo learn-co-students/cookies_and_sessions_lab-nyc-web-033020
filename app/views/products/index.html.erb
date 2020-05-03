@@ -1,0 +1,21 @@
+<h3>Your Cart</h3>
+<% if session[:cart].empty? %>
+  <p>Your Cart is Empty</p>
+<% else %>
+  <%= link_to 'Empty Cart', '/products/reset' %>
+  <ul>
+    <% session[:cart].uniq.each do |item_id| %>
+      <li><%= Product.find(item_id).name %> | Qty: <%= session[:cart].count(item_id) %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h3>Products</h3>
+<% @products.each do |p| %>
+  <p><%= p.name %> | <%= link_to 'Add to cart', add_product_path(p), method: 'post' %>
+<% end %>
+  <%= form_for @product do |f| %>
+    <%= f.label 'Create new item and add to cart: ' %>
+    <%= f.text_field :name, id: :product %>
+    <%= f.submit 'add to cart' %>
+  <% end %>
